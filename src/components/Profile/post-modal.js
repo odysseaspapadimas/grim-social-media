@@ -35,7 +35,7 @@ const PostModal = ({
     };
 
     getPhotoSrc();
-  }, [postIndex]);
+  }, [postIndex, userId]);
 
   useEffect(() => {
     const getPhoto = async () => {
@@ -49,7 +49,7 @@ const PostModal = ({
       setPost(post);
     };
     getPost();
-  }, [url]);
+  }, [url, storage, userId]);
 
 
   const customStyles = {

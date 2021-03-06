@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import FirebaseContext from "../context/firebase";
 import UserContext from "../context/user";
 import { createPost, getUserPhotosByUserId } from "../services/firebase";
@@ -12,7 +12,6 @@ const UploadPost = () => {
   const [url, setUrl] = useState("");
   const [progress, setProgress] = useState(0);
   const [caption, setCaption] = useState("");
-  const [links, setLinks] = useState([]);
 
   const handleChange = (e) => {
     if (e.target.files[0]) {

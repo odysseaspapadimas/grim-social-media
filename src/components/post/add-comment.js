@@ -14,12 +14,11 @@ const AddComment = ({ docId, comments, setComments, commentInput }) => {
   const [isEmojiOpen, setIsEmojiOpen] = useState(false);
 
   const [comment, setComment] = useState("");
-  const [posted, setPosted] = useState(0);
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
 
-    setComments([...comments, { displayName, comment, posted }]);
+    setComments([...comments, { displayName, comment }]);
     setComment("");
 
     return app

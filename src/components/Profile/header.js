@@ -110,7 +110,7 @@ const Header = ({
         }
       );
     }
-  }, [image]);
+  }, [image, storage, user.username]);
 
   return (
     <div className="relative">
