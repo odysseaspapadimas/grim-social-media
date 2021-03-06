@@ -24,7 +24,7 @@ const Profile = () => {
     };
 
     checkUserExists();
-  }, [username]);
+  }, [username, history]);
 
   return userExists ? (
     <div className="bg-gray-background">
