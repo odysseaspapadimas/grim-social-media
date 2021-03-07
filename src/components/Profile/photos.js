@@ -44,8 +44,26 @@ const Photos = ({
   }, [profileUsername, storage]);
 
   useEffect(() => {
-    setSortedUrls([...urls].sort().reverse());
-  }, [urls]);
+    urls.sort((a, b) => {
+      const subA = a.substring(
+        a.indexOf(`${profileUsername}%2F`),
+        a.indexOf(".jpg")
+      );
+      const subB = b.substring(
+        b.indexOf(`${profileUsername}%2F`),
+        b.indexOf(".jpg")
+      );
+
+      a = subA.substring(subA.indexOf("F") + 1, subA.length);
+      b = subB.substring(subB.indexOf("F") + 1, subB.length);
+      return b - a;
+    });
+    setSortedUrls(urls);
+  }, [urls, profileUsername]);
+
+  useEffect(() => {
+    //console.log(sortedUrls, "sortedUrls");
+  }, [sortedUrls]);
 
   return (
     <div

@@ -24,11 +24,18 @@ const UploadPost = () => {
     photos = [...photos].sort((a, b) => {
       return a.photoId - b.photoId;
     });
-    const newPhotoId = photos[photos.length - 1].photoId + 1;
-    createPost(user.uid, newPhotoId, caption);
+    console.log(photos, 'photos');
+    let newPhotoId;
+    if (photos.length > 0) {
+      newPhotoId = photos[photos.length - 1].photoId + 1;
+    } else {
+      newPhotoId = 0;
+    }
+    createPost(user.uid, user.displayName, newPhotoId, caption);
     const uploadTask = storage
       .ref(`images/users/${user.displayName}/${newPhotoId}.jpg`)
       .put(image);
+    console.log(`images/users/${user.displayName}/${newPhotoId}.jpg`, "folder");
     uploadTask.on(
       "state_changed",
       (snapshot) => {

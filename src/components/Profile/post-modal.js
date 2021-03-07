@@ -39,8 +39,10 @@ const PostModal = ({
 
   useEffect(() => {
     const getPhoto = async () => {
-      const path = await storage.ref(`${url}`).getDownloadURL();
-      setSrc(path);
+      try {
+        const path = await storage.ref(`${url}`).getDownloadURL();
+        setSrc(path);
+      } catch (error) {}
     };
     getPhoto();
 
@@ -50,7 +52,6 @@ const PostModal = ({
     };
     getPost();
   }, [url, storage, userId]);
-
 
   const customStyles = {
     overlay: {

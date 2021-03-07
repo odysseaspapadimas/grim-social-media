@@ -154,14 +154,14 @@ export const toggleFollow = async (
   );
 };
 
-export const createPost = async (userId, photoId, caption) => {
+export const createPost = async (userId, username, photoId, caption) => {
   app
     .firestore()
     .collection("photos")
     .add({
       photoId: photoId,
       userId: userId,
-      imageSrc: `/images/users/outis/${photoId}.jpg`,
+      imageSrc: `/images/users/${username}/${photoId}.jpg`,
       caption: caption,
       likes: [],
       comments: [],
