@@ -61,10 +61,6 @@ const Photos = ({
     setSortedUrls(urls);
   }, [urls, profileUsername]);
 
-  useEffect(() => {
-    //console.log(sortedUrls, "sortedUrls");
-  }, [sortedUrls]);
-
   return (
     <div
       className="h-16 border-t border-gray-primary mt-10 pt-4"

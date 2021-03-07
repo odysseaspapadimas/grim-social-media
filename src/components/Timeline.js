@@ -4,7 +4,6 @@ import Post from "./post";
 
 const Timeline = () => {
   const { photos, moreThanOneUser } = useFollowedUsersPhotos();
-  console.log(photos);
   return (
     <div className="container col-span-2">
       {!photos ? (

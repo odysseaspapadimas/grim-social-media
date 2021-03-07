@@ -24,7 +24,7 @@ const UploadPost = () => {
     photos = [...photos].sort((a, b) => {
       return a.photoId - b.photoId;
     });
-    console.log(photos, 'photos');
+    
     let newPhotoId;
     if (photos.length > 0) {
       newPhotoId = photos[photos.length - 1].photoId + 1;
@@ -35,7 +35,7 @@ const UploadPost = () => {
     const uploadTask = storage
       .ref(`images/users/${user.displayName}/${newPhotoId}.jpg`)
       .put(image);
-    console.log(`images/users/${user.displayName}/${newPhotoId}.jpg`, "folder");
+
     uploadTask.on(
       "state_changed",
       (snapshot) => {
