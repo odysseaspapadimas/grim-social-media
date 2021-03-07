@@ -17,14 +17,11 @@ const useFollowedUsersPhotos = () => {
           userId,
           loggedInUser[0].following
         );
-        console.log(followedUserPhotos);
         let array = [];
         let followedUsers = followedUserPhotos.map((photo) => {
-          console.log(photo.username);
           array.push(photo.username);
           return array.every((val, i, arr) => val === arr[0]);
         });
-        console.log(followedUsers.includes(false), 'heree');
         setMoreThanOneUser(followedUsers.includes(false));
         followedUserPhotos.sort((a, b) => b.dateCreated - a.dateCreated);
         setPhotos(followedUserPhotos);
