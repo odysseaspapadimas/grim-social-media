@@ -20,10 +20,16 @@ const SuggestedProfile = ({
 
   useEffect(() => {
     const getAvatar = async () => {
-      const path = await storage
-        .ref(`/images/avatars/${username}.jpg`)
-        .getDownloadURL();
-      setUrl(path);
+      try {
+        const path = await storage
+          .ref(`/images/avatars/${username}.jpg`)
+          .getDownloadURL();
+        setUrl(path);
+      } catch {
+        setUrl(
+          "https://firebasestorage.googleapis.com/v0/b/instagram-clone-51c6b.appspot.com/o/images%2Favatars%2Fdefault%2Fdefault.jpg?alt=media&token=8758bd13-c26b-474a-82bf-a4c28278a141"
+        );
+      }
     };
     if (username) {
       getAvatar();
@@ -43,11 +49,13 @@ const SuggestedProfile = ({
     <div className="flex flex-row items-center align-items justify-between py-2">
       <div className="flex items-center justify-between">
         {!!url ? (
-          <img
-            className="rounded-full w-8 flex mr-3"
-            src={`${url}`}
-            alt="Suggested user"
-          />
+          <Link to={`/p/${username}`}>
+            <img
+              className="rounded-full w-8 flex mr-3"
+              src={`${url}`}
+              alt="Suggested user"
+            />
+          </Link>
         ) : (
           <Skeleton count={1} width={32} height={32} />
         )}

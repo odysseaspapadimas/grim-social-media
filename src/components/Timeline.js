@@ -3,7 +3,8 @@ import useFollowedUsersPhotos from "../hooks/use-followed-users-photos";
 import Post from "./post";
 
 const Timeline = () => {
-  const { photos } = useFollowedUsersPhotos();
+  const { photos, moreThanOneUser } = useFollowedUsersPhotos();
+  console.log(photos);
   return (
     <div className="container col-span-2">
       {!photos ? (
@@ -14,7 +15,7 @@ const Timeline = () => {
         </>
       ) : photos && photos.length > 0 ? (
         photos.map((content, index) => (
-          <Post key={content.docId} index={index} content={content} />
+          <Post key={content.docId} index={index} content={content} moreThanOne={moreThanOneUser} />
         ))
       ) : (
         // <img key={content.docId} src={content.imageSrc} alt="" />

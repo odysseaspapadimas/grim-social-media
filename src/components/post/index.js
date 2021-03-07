@@ -5,14 +5,12 @@ import Footer from "./footer";
 import Header from "./header";
 import Image from "./image";
 import FirebaseContext from "../../context/firebase";
-import useUser from "../../hooks/use-user";
 
-const Post = ({ content, index }) => {
+const Post = ({ content, index, moreThanOne }) => {
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
 
   const { storage } = useContext(FirebaseContext);
-  const { user } = useUser();
 
   const [urls, setUrls] = useState([]);
   const [sortedUrls, setSortedUrls] = useState([]);
@@ -55,7 +53,7 @@ const Post = ({ content, index }) => {
         likes={content.likes}
         docId={content.docId}
         src={
-          sortedUrls.length > 1 && user.following.length > 1
+          sortedUrls.length > 1 && moreThanOne
             ? sortedUrls[index - 1]
             : sortedUrls[index]
         }

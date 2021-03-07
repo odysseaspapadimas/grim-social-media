@@ -4,6 +4,7 @@ import { getUserByUserId, getUserFollowedPhotos } from "../services/firebase";
 
 const useFollowedUsersPhotos = () => {
   const [photos, setPhotos] = useState(null);
+  const [moreThanOneUser, setMoreThanOneUser] = useState(false);
   const {
     user: { uid: userId = "" },
   } = useContext(UserContext);
@@ -16,6 +17,15 @@ const useFollowedUsersPhotos = () => {
           userId,
           loggedInUser[0].following
         );
+        console.log(followedUserPhotos);
+        let array = [];
+        let followedUsers = followedUserPhotos.map((photo) => {
+          console.log(photo.username);
+          array.push(photo.username);
+          return array.every((val, i, arr) => val === arr[0]);
+        });
+        console.log(followedUsers.includes(false), 'heree');
+        setMoreThanOneUser(followedUsers.includes(false));
         followedUserPhotos.sort((a, b) => b.dateCreated - a.dateCreated);
         setPhotos(followedUserPhotos);
       } else {
@@ -25,7 +35,7 @@ const useFollowedUsersPhotos = () => {
     getTimelinePhotos();
   }, [userId]);
 
-  return { photos };
+  return { photos, moreThanOneUser };
 };
 
 export default useFollowedUsersPhotos;
