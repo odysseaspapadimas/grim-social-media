@@ -5,11 +5,21 @@ import UserContext from "../../context/user";
 import Skeleton from "react-loading-skeleton";
 import "./actions.css";
 
-const Image = ({ caption, likes, docId, src }) => {
+const Image = ({
+  caption,
+  likes,
+  totalLikes,
+  setLikes,
+  likedPhoto,
+  docId,
+  src,
+  toggleLiked,
+  setToggleLiked,
+}) => {
   const { app, FieldValue } = useContext(FirebaseContext);
   const { user } = useContext(UserContext);
 
-  const [hasLikedPhoto, setHasLikedPhoto] = useState(false);
+  const [hasLikedPhoto, setHasLikedPhoto] = useState(likedPhoto);
 
   useEffect(() => {
     if (likes?.includes(user.uid)) {
@@ -34,6 +44,12 @@ const Image = ({ caption, likes, docId, src }) => {
         .update({
           likes: FieldValue.arrayUnion(user.uid),
         });
+    }
+    console.log(toggleLiked);
+    if (!toggleLiked) {
+      setLikes((likes) => likes + 1);
+
+      setToggleLiked(true);
     }
 
     console.log("double");

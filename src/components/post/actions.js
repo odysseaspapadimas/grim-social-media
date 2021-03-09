@@ -1,14 +1,20 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import FirebaseContext from "../../context/firebase";
 import UserContext from "../../context/user";
 import "./actions.css";
 
-const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
+const Actions = ({
+  docId,
+  likes,
+  setLikes,
+  totalLikes,
+  likedPhoto,
+  handleFocus,
+  toggleLiked,
+  setToggleLiked,
+}) => {
   const { app, FieldValue } = useContext(FirebaseContext);
   const { user } = useContext(UserContext);
-
-  const [toggleLiked, setToggleLiked] = useState(likedPhoto);
-  const [likes, setLikes] = useState(totalLikes);
 
   const handleToggleLiked = async () => {
     setToggleLiked((toggleLiked) => !toggleLiked);
@@ -23,14 +29,13 @@ const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
           : FieldValue.arrayUnion(user.uid),
       });
 
-    setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
+    setLikes((totalLikes) => (toggleLiked ? totalLikes - 1 : totalLikes + 1));
   };
 
   return (
     <>
       <div className="flex justify-between p-4">
         <div className="flex">
-          
           <svg
             onClick={() => handleToggleLiked((toggleLiked) => !toggleLiked)}
             onKeyDown={(e) => {
@@ -76,7 +81,7 @@ const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
       </div>
       <div className="p-4 py-0">
         <p className="font-semibold">
-          {likes === 1 ? `${likes} like` : `${likes} likes`}
+          {totalLikes === 1 ? `${totalLikes} like` : `${totalLikes} likes`}
         </p>
       </div>
     </>
