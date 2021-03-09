@@ -35,6 +35,7 @@ const Actions = ({
     if (likedPhoto) {
       setToggleLiked(likedPhoto);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

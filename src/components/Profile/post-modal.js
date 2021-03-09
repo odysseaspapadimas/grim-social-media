@@ -16,7 +16,6 @@ const PostModal = ({ isModalOpen, setIsModalOpen, userId, postIndex }) => {
   const [url, setUrl] = useState("");
   const [src, setSrc] = useState("");
   const [post, setPost] = useState({});
-  const [photos, setPhotos] = useState([]);
 
   const imageRef = useRef();
 
