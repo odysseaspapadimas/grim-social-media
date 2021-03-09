@@ -1,6 +1,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
 import "firebase/storage";
+//import {seedDatabase} from '../seed';
 
 const app = firebase.initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,

@@ -14,7 +14,7 @@ const Header = ({ username }) => {
           .ref(`/images/avatars/${username}.jpg`)
           .getDownloadURL();
         setUrl(path);
-      } catch {
+      } catch (error) {
         setUrl(
           "https://firebasestorage.googleapis.com/v0/b/instagram-clone-51c6b.appspot.com/o/images%2Favatars%2Fdefault%2Fdefault.jpg?alt=media&token=8758bd13-c26b-474a-82bf-a4c28278a141"
         );

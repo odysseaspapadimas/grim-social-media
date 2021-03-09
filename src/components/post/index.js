@@ -1,49 +1,13 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useRef } from "react";
 import Actions from "./actions";
 import Comments from "./comments";
 import Footer from "./footer";
 import Header from "./header";
 import Image from "./image";
-import FirebaseContext from "../../context/firebase";
 
-const Post = ({ content, index, moreThanOne }) => {
+const Post = ({ content, imageSrc }) => {
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
-
-  const { storage } = useContext(FirebaseContext);
-
-  const [urls, setUrls] = useState([]);
-  const [sortedUrls, setSortedUrls] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const getPhotos = async () => {
-      const images = await storage
-        .ref()
-        .child(`images/users/${content.username}/`);
-      images
-        .list()
-        .then((res) => {
-          res.items.forEach((image) => {
-            image.getDownloadURL().then((url) => {
-              setUrls((urls) => [...urls, url]);
-            });
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      setLoaded(true);
-    };
-
-    if (content.username) {
-      getPhotos();
-    }
-  }, [content.username, storage]);
-
-  useEffect(() => {
-    setSortedUrls([...urls].sort().reverse());
-  }, [urls]);
 
   return (
     <div className="rounded col-span-4 border bg-white border-gray-primary mb-16">
@@ -52,12 +16,7 @@ const Post = ({ content, index, moreThanOne }) => {
         caption={content.caption}
         likes={content.likes}
         docId={content.docId}
-        src={
-          sortedUrls.length > 1 && moreThanOne
-            ? sortedUrls[index - 1]
-            : sortedUrls[index]
-        }
-        loaded={loaded}
+        src={imageSrc}
       />
       <Actions
         docId={content.docId}
