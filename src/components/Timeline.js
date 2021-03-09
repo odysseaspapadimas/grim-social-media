@@ -5,7 +5,7 @@ import useFollowedUsersPhotos from "../hooks/use-followed-users-photos";
 import Post from "./post";
 
 const Timeline = () => {
-  const { photos } = useFollowedUsersPhotos();
+  const { photos, following } = useFollowedUsersPhotos();
 
   const { storage } = useContext(FirebaseContext);
 
@@ -25,6 +25,7 @@ const Timeline = () => {
     if (photos) {
       getPhotos();
     }
+    console.log(photos);
   }, [photos, storage]);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Timeline = () => {
   }, [urls]);
   return (
     <div className="container col-span-2">
-      {!photos ? (
+      {!photos && following > 0 ? (
         <>
           {[...new Array(4)].map((_, index) => (
             <Skeleton key={index} count={1} width={320} height={400} />

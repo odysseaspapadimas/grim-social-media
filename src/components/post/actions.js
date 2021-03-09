@@ -1,11 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import FirebaseContext from "../../context/firebase";
 import UserContext from "../../context/user";
 import "./actions.css";
 
 const Actions = ({
   docId,
-  likes,
   setLikes,
   totalLikes,
   likedPhoto,
@@ -31,6 +30,12 @@ const Actions = ({
 
     setLikes((totalLikes) => (toggleLiked ? totalLikes - 1 : totalLikes + 1));
   };
+
+  useEffect(() => {
+    if (likedPhoto) {
+      setToggleLiked(likedPhoto);
+    }
+  }, []);
 
   return (
     <>
