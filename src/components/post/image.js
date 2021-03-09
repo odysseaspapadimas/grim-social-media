@@ -45,14 +45,12 @@ const Image = ({
           likes: FieldValue.arrayUnion(user.uid),
         });
     }
-    console.log(toggleLiked);
     if (!toggleLiked) {
       setLikes((likes) => likes + 1);
 
       setToggleLiked(true);
     }
 
-    console.log("double");
   });
 
   return (

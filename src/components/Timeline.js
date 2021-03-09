@@ -25,7 +25,6 @@ const Timeline = () => {
     if (photos) {
       getPhotos();
     }
-    console.log(photos);
   }, [photos, storage]);
 
   useEffect(() => {
