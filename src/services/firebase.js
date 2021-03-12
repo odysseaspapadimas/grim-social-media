@@ -186,3 +186,18 @@ export const getPostByUsernameImageSrc = async (userId, imageSrc) => {
 
   return response;
 };
+
+export const deleteFirestoreDoc = async (docId) => {
+  app
+    .firestore()
+    .collection("photos")
+    .doc(docId)
+    .delete()
+    .then(() => {
+      console.log("success");
+    });
+};
+
+export const deleteStoragePhoto = async (imageSrc) => {
+  app.storage().ref().child(imageSrc).delete().then();
+};

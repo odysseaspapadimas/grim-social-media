@@ -3,13 +3,21 @@ import Modal from "react-modal";
 import FirebaseContext from "../../context/firebase";
 import UserContext from "../../context/user";
 import {
+  deleteFirestoreDoc,
+  deleteStoragePhoto,
   getPostByUsernameImageSrc,
   getUserPhotosByUserId,
 } from "../../services/firebase";
 import Actions from "../post/actions";
 import Comments from "../post/comments";
 
-const PostModal = ({ isModalOpen, setIsModalOpen, userId, postIndex }) => {
+const PostModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  userId,
+  postIndex,
+  username,
+}) => {
   const { storage } = useContext(FirebaseContext);
   const { user } = useContext(UserContext);
 
@@ -44,6 +52,8 @@ const PostModal = ({ isModalOpen, setIsModalOpen, userId, postIndex }) => {
 
     getPhotoSrc();
 
+    console.log();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postIndex, userId]);
 
@@ -62,6 +72,13 @@ const PostModal = ({ isModalOpen, setIsModalOpen, userId, postIndex }) => {
     };
     getPost();
   }, [url, storage, userId]);
+
+  const deletePost = async () => {
+    deleteFirestoreDoc(post.docId);
+    deleteStoragePhoto(post.imageSrc);
+    setIsModalOpen(false);
+    window.location.reload();
+  };
 
   const customStyles = {
     overlay: {
@@ -88,38 +105,48 @@ const PostModal = ({ isModalOpen, setIsModalOpen, userId, postIndex }) => {
         onRequestClose={() => setIsModalOpen(false)}
         style={customStyles}
       >
-        <div className="flex">
-          <div className="flex-1 h-full object-cover">
-            <img
-              ref={imageRef}
-              src={src}
-              alt=""
-              className="h-full w-full object-cover"
-            />
+        <>
+          {user.displayName === username && (
+            <button
+              className="absolute top-4 right-4 text-red-600 semibold"
+              onClick={deletePost}
+            >
+              Delete post
+            </button>
+          )}
+          <div className="flex">
+            <div className="flex-1 h-full object-cover">
+              <img
+                ref={imageRef}
+                src={src}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="flex-1 flex flex-col justify-center mt-20 ">
+              {post && post.comments && (
+                <div className="">
+                  <Actions
+                    docId={post.docId}
+                    likes={post.likes}
+                    totalLikes={likes}
+                    setLikes={setLikes}
+                    likedPhoto={hasUserLikedPhoto}
+                    handleFocus={handleFocus}
+                    toggleLiked={toggleLiked}
+                    setToggleLiked={setToggleLiked}
+                  />
+                  <Comments
+                    docId={post.docId}
+                    comments={post.comments}
+                    posted={post.dateCreated}
+                    commentInput={commentInput}
+                  />
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex-1 flex flex-col justify-center mt-20 ">
-            {post && post.comments && (
-              <div className="">
-                <Actions
-                  docId={post.docId}
-                  likes={post.likes}
-                  totalLikes={likes}
-                  setLikes={setLikes}
-                  likedPhoto={hasUserLikedPhoto}
-                  handleFocus={handleFocus}
-                  toggleLiked={toggleLiked}
-                  setToggleLiked={setToggleLiked}
-                />
-                <Comments
-                  docId={post.docId}
-                  comments={post.comments}
-                  posted={post.dateCreated}
-                  commentInput={commentInput}
-                />
-              </div>
-            )}
-          </div>
-        </div>
+        </>
       </Modal>
     </div>
   );

@@ -20,6 +20,7 @@ const Image = ({
   const { user } = useContext(UserContext);
 
   const [hasLikedPhoto, setHasLikedPhoto] = useState(likedPhoto);
+  const [showAnimation, setShowAnimation] = useState(false);
 
   useEffect(() => {
     if (likes?.includes(user.uid)) {
@@ -51,14 +52,34 @@ const Image = ({
       setToggleLiked(true);
     }
 
+    setShowAnimation(true);
+    setTimeout(() => setShowAnimation(false), 600);
   });
 
   return (
-    <div className="post__img flex justify-center">
+    <div className="post__img flex justify-center items-center">
       {!src ? (
         <Skeleton count={1} width={675} height={845} />
       ) : (
-        <img onClick={handleDoubleClick} src={src} alt={caption} />
+        <>
+          <img onClick={handleDoubleClick} src={src} alt={caption} />
+          {showAnimation && (
+            <svg
+              className="text-red-500 absolute w-24 animate-ping"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#ef4444"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="0"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          )}
+        </>
       )}
     </div>
   );
