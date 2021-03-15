@@ -80,7 +80,7 @@ const UploadPost = () => {
             Upload
           </button>
         </div>
-        <img src={url || "http://via.placeholder.com/300"} alt="firebase" />
+        <img className="w-72 h-72 object-cover" src={url || "http://via.placeholder.com/300"} alt="firebase" />
       </div>
     </>
   );

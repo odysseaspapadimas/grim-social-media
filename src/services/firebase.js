@@ -7,7 +7,7 @@ export async function doesUsernameExist(username) {
     .where("username", "==", username)
     .get();
 
-  return result.docs.map((user) => user.data().length > 0);
+  return result.docs.map((user) => !!user.data());
 }
 
 export const getUserByUserId = async (userId) => {
@@ -188,16 +188,96 @@ export const getPostByUsernameImageSrc = async (userId, imageSrc) => {
 };
 
 export const deleteFirestoreDoc = async (docId) => {
-  app
-    .firestore()
-    .collection("photos")
-    .doc(docId)
-    .delete()
-    .then(() => {
-      console.log("success");
-    });
+  app.firestore().collection("photos").doc(docId).delete();
 };
 
 export const deleteStoragePhoto = async (imageSrc) => {
-  app.storage().ref().child(imageSrc).delete().then();
+  app.storage().ref().child(imageSrc).delete();
+};
+
+export const sendMessage = async (
+  senderDocId,
+  chatDocId,
+  text,
+  senderUsername,
+  receiverUsername
+) => {
+  try {
+    app
+      .firestore()
+      .collection("users")
+      .doc(senderDocId)
+      .collection("chats")
+      .doc(chatDocId)
+      .update({
+        messages: FieldValue.arrayUnion({
+          sender: "me",
+          text,
+          createdAt: Date.now(),
+        }),
+      });
+
+    const [receiver] = await getUserByUsername(receiverUsername);
+    const receiverDocId = receiver.docId;
+
+    const [response] = await checkForChatWithUser(
+      receiverDocId,
+      senderUsername
+    );
+    const receiverChatDocId = response.docId;
+
+    app
+      .firestore()
+      .collection("users")
+      .doc(receiverDocId)
+      .collection("chats")
+      .doc(receiverChatDocId)
+      .update({
+        messages: FieldValue.arrayUnion({
+          sender: senderUsername,
+          text,
+          createdAt: Date.now(),
+        }),
+      });
+  } catch (error) {
+    console.log(error, "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+  }
+};
+
+export const checkForChatWithUser = async (myDocId, otherUsername) => {
+  const result = await app
+    .firestore()
+    .collection("users")
+    .doc(myDocId)
+    .collection("chats")
+    .where("sender", "==", otherUsername)
+    .get();
+
+  const response = result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id,
+  }));
+
+  if (response && response.length === 0) {
+    app.firestore().collection("users").doc(myDocId).collection("chats").add({
+      sender: otherUsername,
+      messages: [],
+    });
+    const result = await app
+      .firestore()
+      .collection("users")
+      .doc(myDocId)
+      .collection("chats")
+      .where("sender", "==", otherUsername)
+      .get();
+
+    const response = result.docs.map((item) => ({
+      ...item.data(),
+      docId: item.id,
+    }));
+
+    return response;
+  }
+
+  return response;
 };

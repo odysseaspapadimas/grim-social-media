@@ -12,6 +12,7 @@ const Signup = lazy(() => import("./pages/signup"));
 const Profile = lazy(() => import("./pages/profile"));
 const NotFound = lazy(() => import("./pages/not-found"));
 const Upload = lazy(() => import("./pages/upload-post"));
+const Chats = lazy(() => import("./pages/chats"));
 
 const App = () => {
   const { user } = useAuthListener();
@@ -24,7 +25,12 @@ const App = () => {
             <Switch>
               <Route path={ROUTES.LOGIN} component={Login} />
               <Route path={ROUTES.SIGN_UP} component={Signup} />
-              <Route path={ROUTES.PROFILE} component={Profile} />
+              <ProtectedRoute user={user} path={ROUTES.CHATS} exact>
+                <Chats />
+              </ProtectedRoute>
+              <ProtectedRoute user={user} path={ROUTES.PROFILE} exact>
+                <Profile />
+              </ProtectedRoute>
               <ProtectedRoute user={user} path={ROUTES.UPLOAD} exact>
                 <Upload />
               </ProtectedRoute>

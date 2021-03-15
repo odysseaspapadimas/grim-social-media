@@ -126,6 +126,7 @@ const PostModal = ({
             <div className="flex-1 flex flex-col justify-center mt-20 ">
               {post && post.comments && (
                 <div className="">
+                  <p className="ml-4 semibold">{post.caption}</p>
                   <Actions
                     docId={post.docId}
                     likes={post.likes}

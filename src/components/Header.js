@@ -35,11 +35,31 @@ const Header = () => {
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">
       <div className="container mx-auto max-width-lg h-full">
-        <div className="flex justify-between h-full">
+        <div className="flex justify-between items-center h-full">
           <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">
             <Link to={ROUTES.DASHBOARD} aria-label="Dashboard">
               <h1 className="font-semibold text-3xl">Grim</h1>
             </Link>
+          </div>
+          <div className="flex items-center">
+            <svg
+              className="absolute w-4 ml-1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <input
+              className="border-2 border-gray-400 rounded pl-5"
+              type="text"
+              name="search"
+              placeholder="Search"
+            />
           </div>
           <div className="text-gray text-center flex items-center align-items">
             {user ? (
@@ -61,7 +81,7 @@ const Header = () => {
                   </svg>
                 </Link>
 
-                <button>
+                <Link to={ROUTES.CHATS} arial-label="Chats">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -77,7 +97,7 @@ const Header = () => {
                       d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
                     />
                   </svg>
-                </button>
+                </Link>
                 <button
                   type="button"
                   title="Sign Out"

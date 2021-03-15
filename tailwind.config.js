@@ -34,6 +34,12 @@ module.exports = {
       fontFamily: {
         raleway: ["Raleway", "sans-serif"],
       },
+      width: {
+        '60vw': '60vw'
+      },
+      flex: {
+        '2': '2 1 auto'
+      }
     },
   },
   variants: {
