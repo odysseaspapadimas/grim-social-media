@@ -20,8 +20,8 @@ const Inboxes = ({ chats, setSelectedChat }) => {
         chats
           .sort(
             (a, b) =>
-              b.messages[b.messages.length - 1].createdAt -
-              a.messages[a.messages.length - 1].createdAt
+              b.messages[b.messages.length - 1]?.createdAt -
+              a.messages[a.messages.length - 1]?.createdAt
           )
           .map((chat) => {
             return (

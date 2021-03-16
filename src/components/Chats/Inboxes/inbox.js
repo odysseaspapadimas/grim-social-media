@@ -44,7 +44,9 @@ const Inbox = ({
           {lastMessageSender && lastMessageSender === "me" && (
             <p className="pr-1">You: </p>
           )}
+          {lastText && 
           <p>{lastText.length < 20 ? lastText : `${lastText.slice(40)}...`}</p>
+        }
         </div>
       </div>
     </div>

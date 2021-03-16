@@ -40,11 +40,15 @@ const Chat = ({
     e.preventDefault();
     sendMessage(myDocId, otherDocId, message, myUsername, otherUsername);
 
+    dummy.current.scrollIntoView({ behavior: "smooth" });
     setMessage("");
   };
 
   return (
-    <div className="flex-2 border border-gray-primary self-stretch flex flex-col justify-between" style={{maxWidth: '35.52vw'}}>
+    <div
+      className="flex-2 border border-gray-primary self-stretch flex flex-col justify-between"
+      style={{ maxWidth: "35.52vw" }}
+    >
       <div className="h-16 flex justify-start items-center border-b border-gray-primary">
         <div className="flex h-full ml-6 items-center">
           <img
@@ -82,6 +86,8 @@ const Chat = ({
                 );
               }
             })}
+
+          <div></div>
           <span ref={dummy}></span>
         </div>
         <form onSubmit={handleSendMessage} className="flex mt-3">
