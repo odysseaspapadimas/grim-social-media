@@ -38,7 +38,10 @@ const Profile = ({ user }) => {
         followerCount={followerCount}
         setFollowerCount={dispatch}
       />
-      <Photos photos={photosCollection} profile={profile} />
+      <Photos
+        photos={photosCollection.sort((a, b) => b.dateCreated - a.dateCreated)}
+        profile={profile}
+      />
     </div>
   );
 };

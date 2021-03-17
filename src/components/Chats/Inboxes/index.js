@@ -15,27 +15,29 @@ const Inboxes = ({ chats, setSelectedChat }) => {
           Back
         </button>
       </div>
-
-      {chats &&
-        chats
-          .sort(
-            (a, b) =>
-              b.messages[b.messages.length - 1]?.createdAt -
-              a.messages[a.messages.length - 1]?.createdAt
-          )
-          .map((chat) => {
-            return (
-              <Inbox
-                key={chat.id}
-                sender={chat.sender}
-                setSelectedChat={setSelectedChat}
-                lastMessage={{
-                  sender: chat.messages[chat.messages.length - 1]?.sender,
-                  text: chat.messages[chat.messages.length - 1]?.text,
-                }}
-              />
-            );
-          })}
+      <div className="overflow-y-scroll max-w-full">
+        {chats &&
+          chats
+            .sort(
+              (a, b) =>
+                b.messages[b.messages.length - 1]?.createdAt -
+                a.messages[a.messages.length - 1]?.createdAt
+            )
+            .map((chat) => {
+              return (
+                <Inbox
+                  key={chat.id}
+                  sender={chat.sender}
+                  setSelectedChat={setSelectedChat}
+                  read={chat.read}
+                  lastMessage={{
+                    sender: chat.messages[chat.messages.length - 1]?.sender,
+                    text: chat.messages[chat.messages.length - 1]?.text,
+                  }}
+                />
+              );
+            })}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import FirebaseContext from "../../context/firebase";
-import { sendMessage } from "../../services/firebase";
+import { sendMessage, updateMessageReadState } from "../../services/firebase";
+import formatDistance from "date-fns/formatDistance";
 
 const Chat = ({
   user: { username: myUsername, docId: myDocId },
@@ -32,15 +33,22 @@ const Chat = ({
     }
 
     input.current.focus();
+    
+    dummy.current.scrollIntoView();
   }, [storage, otherUsername]);
+
+  useEffect(() => {
+    updateMessageReadState(myDocId, otherDocId); //whenever a new message comes in update read state
+
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
 
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     sendMessage(myDocId, otherDocId, message, myUsername, otherUsername);
-
-    dummy.current.scrollIntoView({ behavior: "smooth" });
     setMessage("");
   };
 
@@ -54,7 +62,7 @@ const Chat = ({
           <img
             src={avatarUrl}
             alt="User profile"
-            className="w-8 rounded-full"
+            className="w-8 h-8 rounded-full"
           />
           <h1 className="font-semibold ml-2">{otherUsername}</h1>
         </div>
@@ -65,24 +73,30 @@ const Chat = ({
           style={{ height: "77.6vh" }}
         >
           {messages &&
-            messages.map(({ text, sender, sentAt }, index) => {
+            messages.map(({ text, sender, createdAt }, index) => {
               if (sender === "me") {
                 return (
-                  <p
-                    key={index}
-                    className="self-end mr-3 my-1 bg-blue-insta text-white py-2 px-5 rounded-3xl"
-                  >
-                    {text}
-                  </p>
+                  <div key={index} className="flex flex-col self-end">
+                    <>
+                      <p className=" mr-3 my-1 bg-blue-insta text-white py-2 px-5 rounded-3xl">
+                        {text}
+                      </p>
+                    </>
+                    <p className="text-sm text-gray-400 self-end pr-2">
+                      {formatDistance(createdAt, new Date())}
+                    </p>
+                  </div>
                 );
               } else {
                 return (
-                  <p
-                    key={index}
-                    className="self-start ml-3 my-1 bg-gray-400 py-2 px-5 rounded-3xl"
-                  >
-                    {text}
-                  </p>
+                  <div key={index} className="flex flex-col self-start">
+                    <p className="ml-3 my-1 bg-gray-400 py-2 px-5 rounded-3xl">
+                      {text}
+                    </p>
+                    <p className="text-sm text-gray-400 self-start pl-2">
+                      {formatDistance(createdAt, new Date())}
+                    </p>
+                  </div>
                 );
               }
             })}

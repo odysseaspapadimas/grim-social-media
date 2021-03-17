@@ -23,6 +23,7 @@ const Chats = () => {
 
   useEffect(() => {
     document.title = "Chats";
+    Notification.requestPermission();
   }, []);
 
   return (

@@ -31,6 +31,7 @@ const Image = ({
   }, [likes, user.uid]);
 
   const handleDoubleClick = useClick("double", async () => {
+    setShowAnimation(false);
     if (likes?.includes(user.uid)) {
       setHasLikedPhoto(true);
     } else {
@@ -53,7 +54,7 @@ const Image = ({
     }
 
     setShowAnimation(true);
-    setTimeout(() => setShowAnimation(false), 600);
+    setTimeout(() => setShowAnimation(false), 2000);
   });
 
   return (
@@ -65,7 +66,7 @@ const Image = ({
           <img onClick={handleDoubleClick} src={src} alt={caption} />
           {showAnimation && (
             <svg
-              className="text-red-500 absolute w-24 animate-ping"
+              className="text-red-500 absolute w-24 animate-ping-long"
               xmlns="http://www.w3.org/2000/svg"
               fill="#ef4444"
               viewBox="0 0 24 24"

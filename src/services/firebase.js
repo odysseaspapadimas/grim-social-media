@@ -238,6 +238,7 @@ export const sendMessage = async (
           text,
           createdAt: Date.now(),
         }),
+        read: false,
       });
   } catch (error) {
     console.log(error, "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
@@ -262,6 +263,7 @@ export const checkForChatWithUser = async (myDocId, otherUsername) => {
     app.firestore().collection("users").doc(myDocId).collection("chats").add({
       sender: otherUsername,
       messages: [],
+      read: false,
     });
     const result = await app
       .firestore()
@@ -280,4 +282,16 @@ export const checkForChatWithUser = async (myDocId, otherUsername) => {
   }
 
   return response;
+};
+
+export const updateMessageReadState = async (myUserDocId, chatDocId) => {
+  app
+    .firestore()
+    .collection("users")
+    .doc(myUserDocId)
+    .collection("chats")
+    .doc(chatDocId)
+    .update({
+      read: true,
+    });
 };

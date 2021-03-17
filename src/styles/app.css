@@ -725,6 +725,10 @@ video {
   height: 2.5rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .h-16 {
   height: 4rem;
 }
@@ -879,6 +883,10 @@ video {
 
 .max-w-xs {
   max-width: 20rem;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .max-w-screen-md {
@@ -1206,8 +1214,8 @@ video {
   }
 }
 
-.animate-ping {
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+.animate-ping-long {
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 @media (min-width: 640px) {

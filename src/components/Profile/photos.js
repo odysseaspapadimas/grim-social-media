@@ -17,21 +17,12 @@ const Photos = ({
 
   useEffect(() => {
     const getPhotos = async () => {
-      const images = await storage
-        .ref()
-        .child(`images/users/${profileUsername}/`);
-      images
-        .list()
-        .then((res) => {
-          res.items.forEach((image) => {
-            image.getDownloadURL().then((url) => {
-              setUrls((urls) => [...urls, url]);
-            });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
+      for (let i = 0; i < photos.length; i++) {
+        const image = await storage.ref(photos[i].imageSrc);
+        image.getDownloadURL().then((url) => {
+          setUrls((urls) => [...urls, url]);
         });
+      }
 
       setLoaded(true);
     };
@@ -41,7 +32,7 @@ const Photos = ({
       setSortedUrls([]);
       getPhotos();
     }
-  }, [profileUsername, storage]);
+  }, [profileUsername, storage, photos]);
 
   useEffect(() => {
     urls.sort((a, b) => {
@@ -67,9 +58,7 @@ const Photos = ({
       style={{ marginBottom: 620 }}
     >
       <div className="grid grid-cols-3 gap-8 mt-4">
-        {!loaded &&
-        sortedUrls.length === photos.length &&
-        sortedUrls[urls.length - 1] ? (
+        {!loaded ? (
           <div className="flex justify-between">
             <Skeleton className="mx-5" count={1} width={288} height={288} />
             <Skeleton className="mx-5" count={1} width={288} height={288} />
@@ -108,7 +97,7 @@ const Photos = ({
                         clipRule="evenodd"
                       />
                     </svg>
-                    {photos[photos.length - index - 1].likes.length}
+                    {photos[index].likes.length}
                   </p>
 
                   <p className="flex items-center text-white font-bold">
@@ -124,7 +113,7 @@ const Photos = ({
                         clipRule="evenodd"
                       />
                     </svg>
-                    {photos[photos.length - index - 1].comments.length}
+                    {photos[index].comments.length}
                   </p>
                 </div>
               </div>

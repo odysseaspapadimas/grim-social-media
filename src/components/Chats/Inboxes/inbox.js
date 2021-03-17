@@ -5,6 +5,7 @@ import Skeleton from "react-loading-skeleton";
 const Inbox = ({
   sender,
   setSelectedChat,
+  read,
   lastMessage: { sender: lastMessageSender, text: lastText },
 }) => {
   const { storage } = useContext(FirebaseContext);
@@ -27,7 +28,12 @@ const Inbox = ({
     if (sender) {
       getAvatar();
     }
-  }, [storage, sender]);
+
+    if (!read) {
+      // eslint-disable-next-line no-unused-vars
+      var notification = new Notification(`${sender} sent you a message`, { body: lastText });
+    }
+  }, [storage, sender, read, lastText]);
   return (
     <div
       onClick={() => setSelectedChat(sender)}
@@ -36,7 +42,11 @@ const Inbox = ({
       {!!!avatarUrl ? (
         <Skeleton count={1} width={48} height={48} />
       ) : (
-        <img src={avatarUrl} alt="User profile" className="w-12 rounded-full" />
+        <img
+          src={avatarUrl}
+          alt="User profile"
+          className="w-12 h-12 rounded-full"
+        />
       )}
       <div className="flex flex-col ml-2">
         <h1 className="font-semibold">{sender}</h1>
@@ -44,9 +54,18 @@ const Inbox = ({
           {lastMessageSender && lastMessageSender === "me" && (
             <p className="pr-1">You: </p>
           )}
-          {lastText && 
-          <p>{lastText.length < 20 ? lastText : `${lastText.slice(40)}...`}</p>
-        }
+          {lastText && (
+            <p
+              className={
+                lastMessageSender &&
+                lastMessageSender !== "me" &&
+                !read &&
+                `font-semibold text-black`
+              }
+            >
+              {lastText.length < 20 ? lastText : `${lastText.slice(40)}...`}
+            </p>
+          )}
         </div>
       </div>
     </div>
